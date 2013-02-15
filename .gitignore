@@ -1,0 +1,11 @@
+*.tmproj
+*.sublime-project
+*.sublime-workspace
+
+# osx noise
+.DS_Store
+profile
+
+# svn & cvs
+.svn
+CVS
