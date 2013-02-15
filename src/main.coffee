@@ -8,9 +8,6 @@
 @.BUGS.px = px = (n) ->
   n * BUGS.devicePixelRatio
 
-init = ->
-  initPaper()
-  
   
 initPaper = ->
   if !!document.createElement('canvas').getContext
@@ -36,4 +33,4 @@ initPaper = ->
     paper.view.draw()
 
 
-$ -> init()
+$ -> initPaper()
