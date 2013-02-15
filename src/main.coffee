@@ -5,7 +5,7 @@
 
 
 # scale @param n by window.devicePixelRatio
-@.BUGS.px = px = (n) ->
+@.BUGS.px = px = (n) =>
   n * @.BUGS.devicePixelRatio
 
   
