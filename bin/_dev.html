@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1" /> -->
   <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1" />
 
 
@@ -13,10 +12,7 @@
   <link rel="stylesheet" href="css/html5-doctor-reset-stylesheet.min.css">
   <link rel="stylesheet" href="css/style.css">
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="js/lib/paper-min.js"></script>
-  
-  <script src="js/app/main.js"></script>
 </head>
 
 <body>
@@ -24,10 +20,25 @@
   <section class="main">
     <div class="center">
       <div class="middle">
-        <canvas></canvas>
+        <canvas id="stage"></canvas>
       </div>
     </div>
   </section>
 
+<script src="js/app/bugs.js"></script>
+<script type="text/paperscript" canvas="stage">
+var px = BUGS.px
+
+var path = new Path();
+path.strokeColor = '#87CEEB';
+path.strokeWidth = px(10);
+path.moveTo(px(100), px(100))
+path.lineTo(px(200), px(300))
+path.lineTo(px(400), px(200))
+path.lineTo(px(600), px(350))
+path.lineTo(px(700), px(100))
+path.lineTo(px(paper.view.viewSize.width - 100), px(paper.view.viewSize.height - 100))
+path.smooth()
+</script>
 </body>
 </html>
