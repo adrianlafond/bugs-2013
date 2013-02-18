@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/style.css">
 
   <script src="js/lib/paper-min.js"></script>
+  <script src="js/app/bugs.js"></script>
 </head>
 
 <body>
@@ -25,20 +26,5 @@
     </div>
   </section>
 
-<script src="js/app/bugs.js"></script>
-<script type="text/paperscript" canvas="stage">
-var px = BUGS.px
-
-var path = new Path();
-path.strokeColor = '#87CEEB';
-path.strokeWidth = px(10);
-path.moveTo(px(100), px(100))
-path.lineTo(px(200), px(300))
-path.lineTo(px(400), px(200))
-path.lineTo(px(600), px(350))
-path.lineTo(px(700), px(100))
-path.lineTo(px(BUGS.width - 100), px(BUGS.height - 100))
-path.smooth()
-</script>
 </body>
 </html>
