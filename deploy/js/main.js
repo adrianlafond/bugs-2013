@@ -10,13 +10,19 @@ var BUGS
       height,
       
       bugs = {},
+      liveId = null,
       activeId = null,
-      nextActiveId = null,
       activeIndex = 0,
          
       files,
       filesLen = 0,
       loading = false,
+      
+      OUT = 'out',
+      IN = 'in',
+      OFF = 'off',
+      ON = 'on',
+      trans = OFF,
       
       $canvas,
       $btnPrev,
@@ -54,7 +60,9 @@ var BUGS
         bugs[id] = module
         if (!activeId || activeId === id) {
           activeId = id
-          transitionBugIn()
+          if (trans === OFF) {
+            transitionBugIn()
+          }          
         }
       }
     }
@@ -104,18 +112,16 @@ var BUGS
     $btnNext.attr('href', (activeIndex < filesLen - 1) ? ('#' + files[activeIndex + 1].id) : '#')
     
     
-    nextActiveId = files[activeIndex].id
-    if (!activeId) {
+    activeId = files[activeIndex].id
+    if (trans === OFF) {
       loadNextBug()
-    } else {
+    } else if (trans === IN || trans === ON) {
       transitionBugOut()
     }    
   }
   
   
   function loadNextBug() {
-    activeId = nextActiveId || files[activeIndex].id
-    nextActiveId = null
     if (bugs[activeId]) {
       transitionBugIn()
     } else {
@@ -131,13 +137,20 @@ var BUGS
   
   
   function transitionBugIn() {
-    $canvas.fadeIn(1000)
-    bugs[activeId].play()
+    liveId = activeId
+    bugs[liveId].play()
+    trans = IN
+    $canvas.stop().fadeIn(1000, function () {
+      trans = ON
+    })
   }
   
   function transitionBugOut() {
-    $canvas.fadeOut(1000, function () {
-      bugs[activeId].stop()
+    trans = OUT
+    $canvas.stop().fadeOut(1000, function () {
+      bugs[liveId].stop()
+      liveId = null
+      trans = OFF
       loadNextBug()
     })
   }
