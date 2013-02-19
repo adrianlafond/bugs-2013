@@ -9,11 +9,13 @@ var BUGS
       width,
       height,
       
-      layers = {},
-      bugs = {},
-      
+      bugs = {},      
       files,
-      loading = false
+      fileIndex = 0,
+      loading = false,
+      
+      $btnPrev,
+      $btnNext
       
       
   //
@@ -50,23 +52,48 @@ var BUGS
       }
     }
     
+    // Set canvas dimensions proportionate to devicePixelRatio.
     $canvas.attr('width', BUGS.px(BUGS.width()))
     $canvas.attr('height', BUGS.px(BUGS.height()))
-    paper.setup($canvas.get(0))
-         
-    layers.stage = paper.project.activeLayer
-    layers.fade = new paper.Layer 
-    paper.project.activeLayer = layers.stage
     
-    $.getJSON('assets/bugs.json', function (data) {
-      files = data.scripts
-      loadBug(files[0].src)
-    })
+    // Initialize Paper.js.
+    paper.setup($canvas.get(0))
+    
+    // Load data.
+    $.getJSON('assets/bugs.json', onBugsDataComplete)
   }
   
   
-  function loadBug(src) {
-    $.getScript(src)
+  function onBugsDataComplete(data) {
+    initPrevNext()
+    files = data.scripts
+    routie({ ':bug?': onRoute })
+  }
+  
+  
+  function initPrevNext() {
+    $btnPrev = $('[title=prev]').css('display', 'block')
+    $btnNext = $('[title=next]').css('display', 'block')
+  }
+  
+  
+  function onRoute(route) {
+    var i, len,
+        index = -1
+    for (i = 0, len = files.length; i < len; i++) {
+      if (files[i].id === route) {
+        index = i
+        break
+      }
+    }
+    fileIndex = (index === -1) ? 0 : index
+    loadBug(fileIndex)
+  }
+  
+  
+  function loadBug(index) {
+    loading = true
+    $.getScript(files[fileIndex].src)
   }
 
 }(jQuery));

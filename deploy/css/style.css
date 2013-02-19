@@ -31,7 +31,7 @@ body { background-color: #000; }
 
 .main a {
   position: absolute;
-  display: block;
+  display: none;
   width: 48px; height: 48px;
   -ms-border-radius: 24px;
   -moz-border-radius: 24px;
