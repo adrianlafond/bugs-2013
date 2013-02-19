@@ -1,0 +1,9 @@
+{
+  "scripts": [{
+    "id": "test1",
+    "src": "js/app/test1.js"
+  }, {
+    "id": "test2",
+    "src": "js/app/test2.js"
+  }]
+}

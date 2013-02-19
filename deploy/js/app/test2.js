@@ -8,10 +8,10 @@
   function draw() {
     var bgrect = new paper.Rectangle(0, 0, BUGS.width(), BUGS.height())
     var bgcolor = new paper.Path.Rectangle(bgrect)
-    bgcolor.fillColor = '#888'
+    bgcolor.fillColor = '#eee'
 
     var path = new paper.Path
-    path.strokeColor = '#87CEEB'
+    path.strokeColor = '#f00'
     path.strokeWidth = px(10)
     path.moveTo(px(100), px(100))
     path.lineTo(px(200), px(300))
@@ -25,7 +25,7 @@
   }
 
 
-  BUGS.register('test1', {
+  BUGS.register('test2', {
     play: function () {
       draw()
     },    
