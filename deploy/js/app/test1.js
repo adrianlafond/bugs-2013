@@ -30,7 +30,7 @@
       draw()
     },    
     stop: function () {
-      paper.activeLayer.removeChildren()
+      paper.project.activeLayer.removeChildren()
     }
   })
 }());

@@ -9,11 +9,16 @@ var BUGS
       width,
       height,
       
-      bugs = {},      
+      bugs = {},
+      activeId = null,
+      nextActiveId = null,
+      activeIndex = 0,
+         
       files,
-      fileIndex = 0,
+      filesLen = 0,
       loading = false,
       
+      $canvas,
       $btnPrev,
       $btnNext
       
@@ -27,8 +32,7 @@ var BUGS
   
   
   function initBugs() {
-    var $canvas = $('canvas')
-    
+    $canvas = $('canvas')
     width = parseInt($canvas.css('width'), 10)
     height = parseInt($canvas.css('height'), 10)
 
@@ -48,7 +52,10 @@ var BUGS
       register: function (id, module) {
         loading = false
         bugs[id] = module
-        bugs[id].play()
+        if (!activeId || activeId === id) {
+          activeId = id
+          transitionBugIn()
+        }
       }
     }
     
@@ -62,38 +69,77 @@ var BUGS
     // Load data.
     $.getJSON('assets/bugs.json', onBugsDataComplete)
   }
-  
+
   
   function onBugsDataComplete(data) {
     initPrevNext()
     files = data.scripts
+    filesLen = files.length
     routie({ ':bug?': onRoute })
   }
   
   
   function initPrevNext() {
-    $btnPrev = $('[title=prev]').css('display', 'block')
-    $btnNext = $('[title=next]').css('display', 'block')
+    $btnPrev = $('[title=prev]')
+    $btnNext = $('[title=next]')
   }
   
   
   function onRoute(route) {
-    var i, len,
+    var i,
         index = -1
-    for (i = 0, len = files.length; i < len; i++) {
+        
+    for (i = 0; i < filesLen; i++) {
       if (files[i].id === route) {
         index = i
         break
       }
     }
-    fileIndex = (index === -1) ? 0 : index
-    loadBug(fileIndex)
+    activeIndex = (index === -1) ? 0 : index
+    
+    $btnPrev.css('display', (activeIndex > 0) ? 'block' : 'none')
+    $btnPrev.attr('href', (activeIndex > 0) ? ('#' + files[activeIndex - 1].id) : '#')
+    
+    $btnNext.css('display', (activeIndex < filesLen - 1) ? 'block' : 'none')
+    $btnNext.attr('href', (activeIndex < filesLen - 1) ? ('#' + files[activeIndex + 1].id) : '#')
+    
+    
+    nextActiveId = files[activeIndex].id
+    if (!activeId) {
+      loadNextBug()
+    } else {
+      transitionBugOut()
+    }    
   }
   
   
-  function loadBug(index) {
+  function loadNextBug() {
+    activeId = nextActiveId || files[activeIndex].id
+    nextActiveId = null
+    if (bugs[activeId]) {
+      transitionBugIn()
+    } else {
+      loadBug()
+    }
+  }
+  
+  
+  function loadBug() {
     loading = true
-    $.getScript(files[fileIndex].src)
+    $.getScript(files[activeIndex].src)
+  }
+  
+  
+  function transitionBugIn() {
+    $canvas.fadeIn(1000)
+    bugs[activeId].play()
+  }
+  
+  function transitionBugOut() {
+    $canvas.fadeOut(1000, function () {
+      bugs[activeId].stop()
+      loadNextBug()
+    })
   }
 
 }(jQuery));
