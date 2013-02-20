@@ -118,8 +118,8 @@ a[title=next] span {
  * PORTRAIT
  * For iPad, scale the canvas down to 768px
  */
-/*@media screen and (device-width: 768px) and (orientation: portrait) {  */
-@media screen and (max-aspect-ratio: 1/1) {  
+@media screen and (device-width: 768px) and (orientation: portrait) {  
+/*@media screen and (max-aspect-ratio: 1/1) {  */
   .main {
     width: 768px;
     text-align: left;
