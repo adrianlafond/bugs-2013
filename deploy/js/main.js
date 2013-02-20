@@ -1,4 +1,3 @@
-
 // @namespace global
 var BUGS
 
@@ -9,33 +8,41 @@ var BUGS
   var width,
       height,
       
+      // bugs modules "model"
       bugs = {},
       liveId = null,
       activeId = null,
       activeIndex = 0,
-         
+      
+      // bugs files "model"
       files,
       filesLen = 0,
       loading = false,
       
+      // transition states
       OUT = 'out',
       IN = 'in',
       OFF = 'off',
       ON = 'on',
       trans = OFF,
       
+      // cache $ objects
       $canvas,
       $nav,
       $btnPrev,
       $btnNext,
       
+      // ipad scales down for portrait, so track scale
+      // to normalize mouse/touch position
       scale = 1
       
       
-  //
+  // start on dom ready
   $(function () {
     if (!!document.createElement('canvas').getContext) {
       initBugs()
+    } else {
+      // do something else for crap browsers
     }
   })
   
@@ -43,9 +50,12 @@ var BUGS
   function initBugs() {
     var onWinLoad
     $canvas = $('canvas')
+    
+    // get the canvas dimensions from css
     width = parseInt($canvas.css('width'), 10)
     height = parseInt($canvas.css('height'), 10)
 
+    // API for modules to access
     BUGS = {
       width: function () {
         return width
@@ -63,6 +73,7 @@ var BUGS
       //   return pixels// * devicePixelRatio
       // },
       
+      // All modules must call this method when they load.
       register: function (id, module) {
         loading = false
         bugs[id] = module
@@ -92,12 +103,14 @@ var BUGS
   }
 
 
+
   function onWinResize() {
     var $win = $(window)
     scale = ($win.width() < $win.height()) ? (1 / 0.75) : 1
   }
 
-  
+
+  // Bugs JSON has loaded.
   function onBugsDataComplete(data) {
     initPrevNext()
     files = data.scripts
@@ -106,6 +119,7 @@ var BUGS
   }
   
   
+  // Cache prev + next nav elements.
   function initPrevNext() {
     $nav = $('.main nav')
     $btnPrev = $('[title=prev]')
@@ -113,6 +127,7 @@ var BUGS
   }
   
   
+  // URL address hash has updated.
   function onRoute(route) {
     var i,
         index = -1
