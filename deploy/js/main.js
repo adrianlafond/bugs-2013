@@ -73,6 +73,7 @@ var BUGS
     
     // Initialize Paper.js.
     paper.setup($canvas.get(0))
+    BUGS.tool = new paper.Tool
     
     // Load data.
     $.getJSON('assets/bugs.json', onBugsDataComplete)

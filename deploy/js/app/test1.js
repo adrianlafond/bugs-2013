@@ -3,8 +3,8 @@
 ;(function () {
   'use strict'
 
-  var px = BUGS.px,
-      tool
+  var px = BUGS.px
+  
   
   function draw() {
     var bw = BUGS.width(),
@@ -29,8 +29,7 @@
     }
     segLen = path.segments.length
     
-    tool = new paper.Tool
-    tool.onMouseDrag = function (e) {
+    BUGS.tool.onMouseDrag = function (e) {
       pointer = e.point
     }
     
@@ -54,7 +53,7 @@
       draw()
     },
     stop: function () {
-      tool = null
+      BUGS.tool.onMouseDrag = null
       paper.view.onFrame = null
       paper.project.activeLayer.removeChildren()
     }
