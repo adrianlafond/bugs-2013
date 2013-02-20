@@ -52,7 +52,7 @@ var BUGS
       },
       
       px: function (pixels) {
-        return pixels * devicePixelRatio
+        return pixels// * devicePixelRatio
       },
       
       register: function (id, module) {
