@@ -3,16 +3,14 @@
 ;(function () {
   'use strict'
 
-  var px = BUGS.px
-  
-  
+
   function draw() {
     var bw = BUGS.width(),
         bh = BUGS.height(),
-        bgrect = new paper.Rectangle(0, 0, px(bw), px(bh)),
+        bgrect = new paper.Rectangle(0, 0, bw, bh),
         bgcolor = new paper.Path.Rectangle(bgrect),
         x = Math.round(bw / 2),
-        y = px(Math.round(bh / 2)),
+        y = Math.round(bh / 2),
         segLen,
         pointer
         
@@ -20,12 +18,12 @@
 
     path = new paper.Path
     path.strokeColor = '#87CEEB'
-    path.strokeWidth = px(10)
-    path.moveTo(px(x), y)
+    path.strokeWidth = 10
+    path.moveTo(x, y)
     
     while(x <= bw) {
       x += 50
-      path.lineTo(px(x), y)
+      path.lineTo(x, y)
     }
     segLen = path.segments.length
     

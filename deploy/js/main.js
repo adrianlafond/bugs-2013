@@ -5,8 +5,8 @@ var BUGS
 ;(function ($) {
   'use strict'
   
-  var devicePixelRatio = window.devicePixelRatio || 1,
-      width,
+  // var devicePixelRatio = window.devicePixelRatio || 1,
+  var width,
       height,
       
       bugs = {},
@@ -51,9 +51,9 @@ var BUGS
         return height
       },
       
-      px: function (pixels) {
-        return pixels// * devicePixelRatio
-      },
+      // px: function (pixels) {
+      //   return pixels// * devicePixelRatio
+      // },
       
       register: function (id, module) {
         loading = false
@@ -68,8 +68,8 @@ var BUGS
     }
     
     // Set canvas dimensions proportionate to devicePixelRatio.
-    $canvas.attr('width', BUGS.px(BUGS.width()))
-    $canvas.attr('height', BUGS.px(BUGS.height()))
+    $canvas.attr('width', BUGS.width())
+    $canvas.attr('height', BUGS.height())
     
     // Initialize Paper.js.
     paper.setup($canvas.get(0))
