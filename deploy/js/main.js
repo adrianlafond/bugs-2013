@@ -161,6 +161,10 @@ var BUGS
     trans = IN
     $canvas.stop().fadeIn(1000, function () {
       trans = ON
+      $btnPrev.css('left', Math.round(Math.random() * 240) + 'px')
+              .css('top', Math.round(Math.random() * 36) + 'px')
+      $btnNext.css('right', Math.round(Math.random() * 240) + 'px')
+              .css('bottom', Math.round(Math.random() * 36) + 'px')
       $nav.stop().fadeIn(600)
     })
   }
