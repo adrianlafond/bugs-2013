@@ -48,7 +48,6 @@ var BUGS
   
   
   function initBugs() {
-    var onWinLoad
     $canvas = $('canvas')
     
     // get the canvas dimensions from css
@@ -91,9 +90,12 @@ var BUGS
     $canvas.attr('height', BUGS.height())
 
     // On window resize, updated the scale multiplier of the canvas.
-    onWinResize()
-    $(window).on('resize', onWinResize)
-    
+    // Relevant only to iPad.
+    if (/iPad/.test(navigator.userAgent)) {
+      onWinResize()
+      $(window).on('resize', onWinResize)
+    }
+  
     // Initialize Paper.js.
     paper.setup($canvas.get(0))
     BUGS.tool = new paper.Tool
