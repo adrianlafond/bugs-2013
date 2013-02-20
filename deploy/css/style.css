@@ -2,6 +2,13 @@ html, body { width: 100%; height: 100%; }
 
 body { background-color: #000; }
 
+* {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+
 .main {
   position: absolute;
   width: 100%;
@@ -9,7 +16,6 @@ body { background-color: #000; }
   min-height: 100%;
   text-align: center;
 }
-
 
 .main .center {
   display: table;
@@ -22,30 +28,89 @@ body { background-color: #000; }
   vertical-align: middle;
 }
 
+.main .content {
+  position: relative;
+  width: 1024px; height: 636px;
+}
+
+.main .content > * {
+  position: absolute;
+  left: 0;
+}
 
 .main canvas {
   width: 1024px; height: 436px;
   display: none;
+  top: 100px;
 }
+
+.main nav {
+  display: none;
+  width: 1024px;
+  height: 100px;
+}
+
+.main nav.prev { top: 0; }
+.main nav.next { top: 536px; }
 
 
 .main a {
   position: absolute;
   display: none;
   width: 48px; height: 48px;
+  
   -ms-border-radius: 24px;
   -moz-border-radius: 24px;
   -webkit-border-radius: 24px;
   -o-border-radius: 24px;
   border-radius: 24px;
+  
+  -ms-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
 }
+  
+.main a span {
+  display: block;
+  width: 6px; height: 6px;
+  margin: 21px;
+  border-radius: 3px;
+  -ms-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.main a:active,
+.main a:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.main a:active span,
+.main a:hover span {
+  width: 48px; height: 48px;
+  margin: 0;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0);
+}
+
 a[title=prev] {
-  background: rgba(255, 0, 0, 0.5);
+  background: rgba(102, 102, 102, 0);
   left: 0; top: 0;
 }
+a[title=prev] span {
+  background: rgba(102, 102, 102, 1);
+}
+
 a[title=next] {
-  background: rgba(0, 255, 0, 0.5);
+  background: rgba(204, 204, 204, 0);
   right: 0; bottom: 0;
+}
+a[title=next] span {
+  background: rgba(204, 204, 204, 1);
 }
 
 
@@ -62,13 +127,26 @@ a[title=next] {
   }
   
   .main .center {
-    margin: 0 0 0 -128px;
+    margin: 0 0 0 0;
   }
   
+  .main .content {
+    width: 768px; height: 527px;
+  }
+  
+  .main nav { width: 768px; }
+  .main nav.next { top: 427px; }
+  
   .main canvas {
+    -ms-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    transform-origin: 0 0;
     -ms-transform: scale(0.75);
     -moz-transform: scale(0.75);
     -webkit-transform: scale(0.75);
+    -o-transform: scale(0.75);
     transform: scale(0.75);
   }
 }

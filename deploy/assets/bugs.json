@@ -5,5 +5,8 @@
   }, {
     "id": "test2",
     "src": "js/app/test2.js"
+  }, {
+    "id": "test3",
+    "src": "js/app/test3.js"
   }]
 }

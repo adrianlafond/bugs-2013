@@ -14,11 +14,11 @@
         segLen,
         pointer
         
-    bgcolor.fillColor = '#888'
+    bgcolor.fillColor = '#ccc'
 
     path = new paper.Path
-    path.strokeColor = '#87CEEB'
-    path.strokeWidth = 10
+    path.strokeColor = '#333'
+    path.strokeWidth = 40
     path.moveTo(x, y)
     
     while(x <= bw) {
@@ -49,7 +49,7 @@
   }
 
 
-  BUGS.register('test1', {
+  BUGS.register('test3', {
     play: function () {
       draw()
     },

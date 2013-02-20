@@ -25,8 +25,11 @@ var BUGS
       trans = OFF,
       
       $canvas,
+      $nav,
       $btnPrev,
-      $btnNext
+      $btnNext,
+      
+      scale = 1
       
       
   //
@@ -38,6 +41,7 @@ var BUGS
   
   
   function initBugs() {
+    var onWinLoad
     $canvas = $('canvas')
     width = parseInt($canvas.css('width'), 10)
     height = parseInt($canvas.css('height'), 10)
@@ -49,6 +53,10 @@ var BUGS
       
       height: function () {
         return height
+      },
+      
+      scale: function () {
+        return scale
       },
       
       // px: function (pixels) {
@@ -70,6 +78,10 @@ var BUGS
     // Set canvas dimensions proportionate to devicePixelRatio.
     $canvas.attr('width', BUGS.width())
     $canvas.attr('height', BUGS.height())
+
+    // On window resize, updated the scale multiplier of the canvas.
+    onWinResize()
+    $(window).on('resize', onWinResize)
     
     // Initialize Paper.js.
     paper.setup($canvas.get(0))
@@ -77,6 +89,12 @@ var BUGS
     
     // Load data.
     $.getJSON('assets/bugs.json', onBugsDataComplete)
+  }
+
+
+  function onWinResize() {
+    var $win = $(window)
+    scale = ($win.width() < $win.height()) ? (1 / 0.75) : 1
   }
 
   
@@ -89,6 +107,7 @@ var BUGS
   
   
   function initPrevNext() {
+    $nav = $('.main nav')
     $btnPrev = $('[title=prev]')
     $btnNext = $('[title=next]')
   }
@@ -111,7 +130,6 @@ var BUGS
     
     $btnNext.css('display', (activeIndex < filesLen - 1) ? 'block' : 'none')
     $btnNext.attr('href', (activeIndex < filesLen - 1) ? ('#' + files[activeIndex + 1].id) : '#')
-    
     
     activeId = files[activeIndex].id
     if (trans === OFF) {
@@ -143,6 +161,7 @@ var BUGS
     trans = IN
     $canvas.stop().fadeIn(1000, function () {
       trans = ON
+      $nav.stop().fadeIn(600)
     })
   }
   
@@ -154,6 +173,7 @@ var BUGS
       trans = OFF
       loadNextBug()
     })
+    $nav.stop().fadeOut(200)
   }
 
 }(jQuery));
