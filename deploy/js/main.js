@@ -15,6 +15,7 @@ var BUGS
       activeIndex = 0,
       
       // bugs files "model"
+      baseUrl = '',
       files,
       filesLen = 0,
       loading = false,
@@ -114,7 +115,14 @@ var BUGS
 
   // Bugs JSON has loaded.
   function onBugsDataComplete(data) {
+    var i, file
     initPrevNext()
+    
+    baseUrl = data.scriptsBaseUrl || baseUrl
+    if (!/\/$/.test(baseUrl)) {
+      baseUrl += '/'
+    }
+    
     files = data.scripts
     filesLen = files.length
     routie({ ':bug?': onRoute })
@@ -135,7 +143,7 @@ var BUGS
         index = -1
         
     for (i = 0; i < filesLen; i++) {
-      if (files[i].id === route) {
+      if (files[i] === route) {
         index = i
         break
       }
@@ -143,12 +151,12 @@ var BUGS
     activeIndex = (index === -1) ? 0 : index
     
     $btnPrev.css('display', (activeIndex > 0) ? 'block' : 'none')
-    $btnPrev.attr('href', (activeIndex > 0) ? ('#' + files[activeIndex - 1].id) : '#')
+    $btnPrev.attr('href', (activeIndex > 0) ? ('#' + files[activeIndex - 1]) : '#')
     
     $btnNext.css('display', (activeIndex < filesLen - 1) ? 'block' : 'none')
-    $btnNext.attr('href', (activeIndex < filesLen - 1) ? ('#' + files[activeIndex + 1].id) : '#')
+    $btnNext.attr('href', (activeIndex < filesLen - 1) ? ('#' + files[activeIndex + 1]) : '#')
     
-    activeId = files[activeIndex].id
+    activeId = files[activeIndex]
     if (trans === OFF) {
       loadNextBug()
     } else if (trans === IN || trans === ON) {
@@ -167,8 +175,11 @@ var BUGS
   
   
   function loadBug() {
+    var src = files[activeIndex]
+    src = /^http/.test(src) ? src : (baseUrl + src)
+    src += '.js'
     loading = true
-    $.getScript(files[activeIndex].src)
+    $.getScript(src)
   }
   
   
