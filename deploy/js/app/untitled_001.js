@@ -34,20 +34,19 @@
       this.neck = neck = []
       for (i = 0; i < 3; i++) {
         this.addChild(neck[i] = new Neck(eye[i]))
-      }      
+      }
       this.addChild(eye[1])
       this.addChild(eye[2])
       this.addChild(eye[0])
       
-      neck[1].visible = neck[2].visible = false
       this.position = new paper.Point(this.x, this.y)
     },
     
     
     animate: function (e) {
-      var i, len          
+      var i, len
       for (i = 0, len = this.eye.length; i < len; i++) {
-        //this.neck[i].update()
+        this.neck[i].update()
       }
     }
   })
@@ -92,38 +91,26 @@
    * A Neck connects the body to an eye.
    * The bottom is always (0, 0), the top the eye's position.
    */
-  var Neck = paper.CompoundPath.extend({
+  var Neck = paper.Path.extend({
     initialize: function (eye) {
+      this.base()
       this.eye = eye
-      // this.fillColor = '#000'
-      this.path1 = new paper.Path(
-        new paper.Point(0, 0),
-        new paper.Point(0, 0),
-        new paper.Point(0, 0))
-      this.path2 = new paper.Path(
-        new paper.Point(0, 0),
+      this.strokeColor = '#000'
+      this.strokeWidth = this.eye.bounds.width * 0.1
+      this.add(new paper.Point(0, 0),
         new paper.Point(0, 0),
         new paper.Point(0, 0))
-      this.path1.strokeColor = this.path2.strokeColor = '#000'
-      this.path1.strokeWidth = this.path1.strokeWidth = 1
-      this.base([this.path1, this.path2])
       this.update()
     },
     
     update: function () {
       var b = this.eye.bounds,
-          s1 = this.path1.segments,
-          s2 = this.path2.segments
-
-      s1[1].point.x = b.width * -0.1
-      s1[1].point.y = b.y / 2//(b.y + b.height) / 2
-      s1[2].point.x = b.x
-      s1[2].point.y = b.y + b.height * 0.5
-      
-      s2[1].point.x = b.width * 0.1
-      s2[1].point.y = s1[1].point.y
-      s2[0].point.x = b.x + b.width
-      s2[0].point.y = s1[2].point.y
+          p = this.eye.position,
+          s = this.segments       
+      // s[1].point.x = p.x * 0.1
+      // s[1].point.y = (p.y + b.height) * 0.5
+      s[2].point.x = p.x
+      s[2].point.y = p.y
       this.smooth()
     }
   })
