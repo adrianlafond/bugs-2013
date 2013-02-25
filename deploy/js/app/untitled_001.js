@@ -3,10 +3,13 @@
 ;(function () {
   'use strict'
   
+  var bug
   
-  var Untitled_001 = paper.Group.extend({
+  
+
+  
+  var Untitled_001 = paper.Layer.extend({
     initialize: function (x, y) {
-      this.base()
       this.x = x
       this.y = y      
       this.drawBug()
@@ -17,39 +20,45 @@
           i,
           eye,
           neck
-      
+
       // invisible bounds to keep the bug positioned absolutely to position x and y
       // and not relatively to the center of its paper.Item.bounds
-      bounds = new paper.Path.Circle(0, 0, BUGS.height() / 2)
-      this.addChild(bounds)
-      
+      // bounds = new paper.Path.Circle(0, 0, BUGS.height() / 2)
+      // this.addChild(bounds)
+
       this.eye = eye = []
       eye[0] = new Eye(0.35)
       eye[1] = new Eye(0.1)
       eye[2] = new Eye(0.16)
-      eye[0].position = new paper.Point(-40, -100)
-      eye[1].position = new paper.Point(10, -52)
-      eye[2].position = new paper.Point(32, -74)
-      
+      eye[0].position = new paper.Point(this.px(-40), this.py(-100))
+      eye[1].position = new paper.Point(this.px(10), this.py(-72))
+      eye[2].position = new paper.Point(this.px(32), this.py(-86))
+
       this.neck = neck = []
       for (i = 0; i < 3; i++) {
-        this.addChild(neck[i] = new Neck(eye[i]))
+        neck[i] = new Neck(this, eye[i])
       }
-      this.addChild(eye[1])
-      this.addChild(eye[2])
-      this.addChild(eye[0])
-      
-      this.position = new paper.Point(this.x, this.y)
+      for (i = 0; i < 3; i++) {
+        eye[i].moveAbove(neck[2])
+      }
     },
-    
     
     animate: function (e) {
       var i, len
       for (i = 0, len = this.eye.length; i < len; i++) {
         this.neck[i].update()
       }
+    },
+    
+    px: function (value) {
+      return this.x + value
+    },
+    
+    py: function (value) {
+      return this.y + value
     }
   })
+
 
   
 
@@ -92,8 +101,9 @@
    * The bottom is always (0, 0), the top the eye's position.
    */
   var Neck = paper.Path.extend({
-    initialize: function (eye) {
+    initialize: function (container, eye) {
       this.base()
+      this.container = container
       this.eye = eye
       this.strokeColor = '#000'
       this.strokeWidth = this.eye.bounds.width * 0.1
@@ -106,9 +116,12 @@
     update: function () {
       var b = this.eye.bounds,
           p = this.eye.position,
-          s = this.segments       
-      // s[1].point.x = p.x * 0.1
-      // s[1].point.y = (p.y + b.height) * 0.5
+          c = this.container,
+          s = this.segments
+      s[0].point.x = c.x
+      s[0].point.y = c.y
+      s[1].point.x = c.x + (c.x - p.x) * 0.25
+      s[1].point.y = c.y + (p.y - c.y) * 0.25
       s[2].point.x = p.x
       s[2].point.y = p.y
       this.smooth()
@@ -124,16 +137,16 @@
         user = {},
         
         bgrect = new paper.Rectangle(0, 0, bw, bh),
-        bgcolor = new paper.Path.Rectangle(bgrect),
-    
-        bug = new Untitled_001(bw / 2, bh / 2)
-    
+        bgcolor = new paper.Path.Rectangle(bgrect)
     
     bgcolor.fillColor = '#FAFAD2'
     // var l1 = new paper.Path.Line(new paper.Point(0, bh/2), new paper.Point(bw, bh/2))
     // var l2 = new paper.Path.Line(new paper.Point(bw/2, 0), new paper.Point(bw/2, bh))
     // l1.strokeWidth = l2.strokeWidth = 1
     // l1.strokeColor = l2.strokeColor = 'red'
+    
+    // bug becomes activeLayer
+    bug = new Untitled_001(bw / 2, bh / 2)
     
     BUGS.tool.onMouseDrag = function (e) {
       user.x = e.point.x * BUGS.scale()
@@ -153,6 +166,7 @@
     stop: function () {
       BUGS.tool.onMouseDrag = null
       paper.view.onFrame = null
+      bug.remove()
       paper.project.activeLayer.removeChildren()
     }
   })
